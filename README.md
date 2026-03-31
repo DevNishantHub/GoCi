@@ -72,6 +72,3 @@ deploy:
 
 This project is not meant to replace existing CI/CD tools, but to help understand how they work internally.
 
-## 📄 License
-
-MIT
