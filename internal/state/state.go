@@ -1,9 +1,14 @@
 package state
 
-import "time"
+import (
+	"fmt"
+	"time"
+
+	"github.com/google/uuid"
+	"golang.org/x/tools/go/analysis/passes/nilfunc"
+)
 
 type Status string
-
 
 // For storing status Constent
 const (
@@ -38,4 +43,32 @@ type JobRun struct{
 	StartedAt	time.Time
 	FinishedAt	time.Time
 }
+
+func NewRun(pipelineName string) (*PipelineRun){
+	return &PipelineRun{
+		Id: uuid.NewString(),
+		Status: StatusPending,
+		TriggeredAt: time.Now(),
+		Stages: []*StageRun{},
+	}
+}
+
+func (p *PipelineRun)StartRun() error {
+	if p.Id != ""{
+		p.Status = StatusRunning
+		return nil
+	}else{
+		return fmt.Errorf("No Running PipeLine Found")
+	}
+}
+func (p *PipelineRun) FinishRun(status Status) error{
+	if p.Id != ""{
+		p.Status = status
+		p.FinishedAt = time.Now()
+		return nil
+	}else{
+		return fmt.Errorf("runId Not Found") 
+	}	
+}
+
 
